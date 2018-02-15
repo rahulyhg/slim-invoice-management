@@ -48,4 +48,23 @@ function deleteProduct($connection,$args) {
 	}
 	return json_encode($jsonData);
 }
+
+function addProduct($connection,$args) {
+	$bindParams = array();
+	$bindParams['product_name'] = $args['product-name'];
+	$bindParams['product_price'] = $args['product-price'];
+	$bindParams['product_quantity'] = $args['product-quantity'];
+	$bindParams['quantity_type'] = $args['quantity-type'];
+	$resultSet = $connection->tableUpdate("insert into product_table (product_name, product_price, product_quantity , quantity_type ) values (:product_name,:product_price,:product_quantity,:quantity_type);",$bindParams);
+	if($resultSet > 0) {
+		$jsonData['status'] = "success";
+	} else if ($resultSet == 0) {
+		$jsonData['status'] = "failure";
+		$jsonData['reason'] = "error in adding product";
+	} else {
+		$jsonData['status'] = "failure";
+		$jsonData['reason'] = "unable to delete the product";
+	}
+	return json_encode($jsonData);
+}
 ?>
