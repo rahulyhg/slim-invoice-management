@@ -20,3 +20,11 @@ $app->get('/products/{product-id}/',function (Request $request, Response $respon
 	$this->dbUtilObject->closeConnection();
 	return $response;
 });
+
+$app->delete('/products/{product-id}/',function (Request $request, Response $response, array $args) {
+	$this->get('logger')->info("Slim-Skeleton '/' route");
+	$result = deleteProduct($this->dbUtilObject,$args);
+	$response->getBody()->write($result);
+	$this->dbUtilObject->closeConnection();
+	return $response;
+});

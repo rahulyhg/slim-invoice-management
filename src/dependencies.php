@@ -19,6 +19,7 @@ $container['logger'] = function ($c) {
 };
 
 $container['dbUtilObject'] = function ($c) {
-    $databaseObject = new DataBaseUtil();
+	$settings = $c->get('settings')['pdo'];
+    $databaseObject = new DataBaseUtil($settings['host_name'] , $settings['db_name'] , $settings['user_name'] , $settings['password']);
     return $databaseObject;
 };

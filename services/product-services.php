@@ -32,4 +32,20 @@ function searchProduct($connection, $args) {
 	//$this->getcontainer()->get('dbUtilObject')->closeConnection();
 	return json_encode($jsonData);
 }
+
+function deleteProduct($connection,$args) {
+	$bindParams = array();
+	$bindParams['product_id'] = intval($args['product-id']);
+	$resultSet = $connection->tableUpdate("delete from product_table where product_id = :product_id",$bindParams);
+	if($resultSet > 0) {
+		$jsonData['status'] = "success";
+	} else if ($resultSet == 0) {
+		$jsonData['status'] = "failure";
+		$jsonData['reason'] = "no such product exists";
+	} else {
+		$jsonData['status'] = "failure";
+		$jsonData['reason'] = "unable to delete the product";
+	}
+	return json_encode($jsonData);
+}
 ?>

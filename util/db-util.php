@@ -2,10 +2,9 @@
 require '../model/product.php';
 class DataBaseUtil {
 	public $connection;
-	public function __construct() {
+	public function __construct($hostName ,$dbName ,$userName ,$password) {
 		try {
-			$dbConfig = parse_ini_file('../config/databaseConfig.ini');
-			$this->connection = new PDO("mysql:host=".$dbConfig['hostname'].";dbname=".$dbConfig['dbname'], $dbConfig['username'], $dbConfig['password']);
+			$this->connection = new PDO("mysql:host=".$hostName.";dbname=".$dbName, $userName, $password);
 			$this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 		catch(PDOException $e) { 
@@ -24,6 +23,15 @@ class DataBaseUtil {
 			return $resultSet;
 			}else
 			return null;
+		}catch(PDOException $e) {
+			return "fail";
+		}
+	}
+	public function tableUpdate($query,$bindParams) {
+		try {
+			$statement = $this->connection->prepare($query);
+			$statement->execute($bindParams);
+			return $statement->rowCount();
 		}catch(PDOException $e) {
 			return "fail";
 		}

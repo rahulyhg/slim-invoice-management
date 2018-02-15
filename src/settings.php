@@ -1,4 +1,5 @@
 <?php
+$config = parse_ini_file('../config/databaseConfig.ini');
 return [
     'settings' => [
         'displayErrorDetails' => true, // set to false in production
@@ -14,6 +15,14 @@ return [
             'name' => 'slim-app',
             'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
             'level' => \Monolog\Logger::DEBUG,
-        ], 
+        ],
+
+        //pdo settings
+        'pdo' => [
+            'host_name' => $config['hostname'],
+            'db_name' =>  $config['dbname'],
+            'user_name' => $config['username'],
+            'password' => $config['password'],
+        ] 
     ],
 ];
